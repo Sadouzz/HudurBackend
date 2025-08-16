@@ -22,7 +22,12 @@ public class Participation {
     @JoinColumn(name = "event_id", nullable = false)
     private Event event;
 
-    private LocalDateTime presenceDate;
+    public Participation(Classe classe, Event event) {
+        this.classe = classe;
+        this.event = event;
+    }
+    public Participation() {
+    }
 
     // Getters & setters
     public Long getId() {
@@ -49,11 +54,4 @@ public class Participation {
         this.event = event;
     }
 
-    public LocalDateTime getPresenceDate() {
-        return presenceDate;
-    }
-
-    public void setPresenceDate(LocalDateTime presenceDate) {
-        this.presenceDate = presenceDate;
-    }
 }
