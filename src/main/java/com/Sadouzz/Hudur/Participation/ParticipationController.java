@@ -56,6 +56,11 @@ public class ParticipationController {
         return participationService.getAllParticipations();
     }
 
+    @GetMapping("/classe={clsId}")
+    public List<Participation> getPartcipationsByClsId(@PathVariable Long clsId) {
+        return participationService.getPartcipationsByClsId(clsId);
+    }
+
     @GetMapping("/{participationId}")
     public ResponseEntity<Participation> getParticipationById(@PathVariable Long participationId) {
         Optional<Participation> participation = participationService.getParticipationById(participationId);

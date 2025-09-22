@@ -1,6 +1,11 @@
 package com.Sadouzz.Hudur.Classe;
 
+import com.Sadouzz.Hudur.Presence.Presence;
+import com.Sadouzz.Hudur.School.School;
+import com.Sadouzz.Hudur.Student.Student;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "classes")
@@ -11,7 +16,14 @@ public class Classe {
 
     private String name, level;
 
-    private Long schoolId;
+    //private Long schoolId;
+
+    @ManyToOne
+    @JoinColumn(name = "school_id", nullable = false)
+    private School school;
+
+    @OneToMany(mappedBy = "classe")
+    private List<Student> students;
 
     public Long getId() {
         return id;
@@ -37,11 +49,19 @@ public class Classe {
         this.level = level;
     }
 
-    public Long getSchoolId() {
-        return schoolId;
+//    public Long getSchoolId() {
+//        return schoolId;
+//    }
+//
+//    public void setSchoolId(Long schoolId) {
+//        this.schoolId = schoolId;
+//    }
+
+    public School getSchool() {
+        return school;
     }
 
-    public void setSchoolId(Long schoolId) {
-        this.schoolId = schoolId;
+    public void setSchool(School school) {
+        this.school = school;
     }
 }

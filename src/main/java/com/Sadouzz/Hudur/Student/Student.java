@@ -1,4 +1,6 @@
 package com.Sadouzz.Hudur.Student;
+import com.Sadouzz.Hudur.Classe.Classe;
+import com.Sadouzz.Hudur.Event.Event;
 import com.Sadouzz.Hudur.Presence.Presence;
 import jakarta.persistence.*;
 
@@ -17,7 +19,11 @@ public class Student {
     private LocalDate dateBirth;
     private String placeBirth;
 
-    private Long classId;
+    //private Long classId;
+
+    @ManyToOne
+    @JoinColumn(name = "class_id", nullable = false)
+    private Classe classe;
 
     @OneToMany(mappedBy = "student")
     private List<Presence> presences;
@@ -54,11 +60,19 @@ public class Student {
         this.placeBirth = placeBirth;
     }
 
-    public Long getClassId() {
-        return classId;
+//    public Long getClassId() {
+//        return classId;
+//    }
+//
+//    public void setClassId(Long classId) {
+//        this.classId = classId;
+//    }
+
+    public Classe getClasse() {
+        return classe;
     }
 
-    public void setClassId(Long classId) {
-        this.classId = classId;
+    public void setClasse(Classe classe) {
+        this.classe = classe;
     }
 }

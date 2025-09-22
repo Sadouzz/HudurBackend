@@ -1,10 +1,11 @@
 package com.Sadouzz.Hudur.Event;
-import java.sql.Time;
+
 import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
 import com.Sadouzz.Hudur.Presence.Presence;
+import com.Sadouzz.Hudur.Session.Session;
 import jakarta.persistence.*;
 
 @Entity
@@ -27,10 +28,11 @@ public class Event {
     @OneToMany(mappedBy = "event")
     private List<Presence> presences;
 
-    /*@Lob
-    private byte[] imageData;*/
+    @OneToMany(mappedBy = "event")
+    private List<Session> sessions;   // 🔥 la nouvelle relation
 
     // Getters et setters
+
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -43,48 +45,26 @@ public class Event {
     public String getPhotoUrl() { return photoUrl; }
     public void setPhotoUrl(String photoUrl) { this.photoUrl = photoUrl; }
 
-    public Date getStartDate() {
-        return startDate;
+    public Date getStartDate() { return startDate; }
+    public void setStartDate(Date startDate) { this.startDate = startDate; }
+
+    public Date getEndDate() { return endDate; }
+    public void setEndDate(Date endDate) { this.endDate = endDate; }
+
+    public LocalTime getStartRegistration() { return startRegistration; }
+    public void setStartRegistration(LocalTime startRegistration) { this.startRegistration = startRegistration; }
+
+    public LocalTime getEndRegistration() { return endRegistration; }
+    public void setEndRegistration(LocalTime endRegistration) { this.endRegistration = endRegistration; }
+
+    public String getLocation() { return location; }
+    public void setLocation(String location) { this.location = location; }
+
+    public List<Session> getSessions() {
+        return sessions;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    public void setSessions(List<Session> sessions) {
+        this.sessions = sessions;
     }
-
-    public void setStartDate(Date date) {
-        this.startDate = date;
-    }
-    public void setEndDate(Date date) {
-        this.endDate = date;
-    }
-
-    public LocalTime getStartRegistration() {
-        return startRegistration;
-    }
-    public void setStartRegistration(LocalTime startRegistration) {
-        this.startRegistration = startRegistration;
-    }
-
-    public LocalTime getEndRegistration() {
-        return endRegistration;
-    }
-    public void setEndRegistration(LocalTime endRegistration) {
-        this.endRegistration = endRegistration;
-    }
-
-    public String getLocation() {
-        return location;
-    }
-
-    public void setLocation(String location) {
-        this.location = location;
-    }
-
-    /*public byte[] getImageData() {
-        return imageData;
-    }
-
-    public void setImageData(byte[] imageData) {
-        this.imageData = imageData;
-    }*/
 }

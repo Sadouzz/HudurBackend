@@ -10,4 +10,5 @@ public interface PresenceRepository extends JpaRepository<Presence, Long> {
     List<Presence> findByStudentId(String studentId);
     List<Presence> findByEventId(Long eventId);
     Presence findByStudentIdAndEventId(String studentId, Long eventId);
+    Presence findByStudentIdAndEventIdAndSessionId(String studentId, Long eventId, Long sessionId);
 }

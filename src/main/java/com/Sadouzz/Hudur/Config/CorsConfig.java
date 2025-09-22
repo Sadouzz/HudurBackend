@@ -1,4 +1,4 @@
-package com.Sadouzz.Hudur;
+package com.Sadouzz.Hudur.Config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

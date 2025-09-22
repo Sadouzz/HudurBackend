@@ -1,6 +1,8 @@
 package com.Sadouzz.Hudur.Presence;
 
 import com.Sadouzz.Hudur.Event.Event;
+import com.Sadouzz.Hudur.Session.Session;
+import com.Sadouzz.Hudur.Session.SessionRepository;
 import com.Sadouzz.Hudur.Student.Student;
 import com.Sadouzz.Hudur.Event.EventRepository;
 import com.Sadouzz.Hudur.Student.StudentRepository;
@@ -25,14 +27,17 @@ public class PresenceController {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private SessionRepository sessionRepository;
+
     @PostMapping
-    public ResponseEntity<?> markPresence(@RequestParam String studentId, @RequestParam Long eventId) {
-        Presence existingPresence = presenceRepository.findByStudentIdAndEventId(studentId, eventId);
+    public ResponseEntity<?> markPresence(@RequestParam String studentId, @RequestParam Long eventId, @RequestParam Long sessionId) {
+        Presence existingPresence = presenceRepository.findByStudentIdAndEventIdAndSessionId(studentId, eventId, sessionId);
 
         if (existingPresence != null) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
-                    .body("Étudiant déjà présent pour cet événement.");
+                    .body("Étudiant déjà présent pour cet événement/session.");
         }
 
         Student student = studentRepository.findById(studentId)
@@ -41,7 +46,10 @@ public class PresenceController {
         Event event = eventRepository.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Événement introuvable"));
 
-        Presence presence = new Presence(student, event, LocalDateTime.now());
+        Session session = sessionRepository.findById(sessionId)
+                .orElseThrow(() -> new RuntimeException("Session introuvable"));
+
+        Presence presence = new Presence(student, event, LocalDateTime.now(), session);
         /*presence.setStudent(student);
         presence.setEvent(event);
         presence.setPresenceDate(LocalDateTime.now());*/

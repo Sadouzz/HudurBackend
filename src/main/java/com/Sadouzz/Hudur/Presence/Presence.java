@@ -1,6 +1,8 @@
 package com.Sadouzz.Hudur.Presence;
 
 import com.Sadouzz.Hudur.Event.Event;
+import com.Sadouzz.Hudur.Session.Session;
+import com.Sadouzz.Hudur.Session.SessionRepository;
 import com.Sadouzz.Hudur.Student.Student;
 import jakarta.persistence.*;
 
@@ -23,14 +25,19 @@ public class Presence {
 
     private LocalDateTime presenceDate;
 
+    @ManyToOne
+    @JoinColumn(name = "session_id", nullable = false)
+    private Session session;
+
     public Presence(){
 
     }
 
-    public Presence(Student student, Event event, LocalDateTime presenceDate) {
+    public Presence(Student student, Event event, LocalDateTime presenceDate, Session session) {
         this.student = student;
         this.event = event;
         this.presenceDate = presenceDate;
+        this.session = session;
     }
 
     // Getters et Setters
@@ -68,5 +75,13 @@ public class Presence {
 
     public void setPresenceDate(LocalDateTime presenceDate) {
         this.presenceDate = presenceDate;
+    }
+
+    public Session getSession() {
+        return session;
+    }
+
+    public void setSession(Session session) {
+        this.session = session;
     }
 }

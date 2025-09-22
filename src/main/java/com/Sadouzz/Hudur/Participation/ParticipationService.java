@@ -14,6 +14,10 @@ public class ParticipationService {
         return participationRepository.findAll();
     }
 
+    public List<Participation> getPartcipationsByClsId(Long clsId) {
+        return participationRepository.findByClasseId(clsId);
+    }
+
     public Optional<Participation> getParticipationById(Long participationId) {
         return participationRepository.findById(participationId); // Recherche l'événement dans la base de données
     }
