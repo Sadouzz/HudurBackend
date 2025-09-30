@@ -10,10 +10,11 @@ import java.util.List;
 @Entity
 @Table(name = "students")
 public class Student {
-    /*@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;*/
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String matricule;
 
     private String name, surname;
     private LocalDate dateBirth;
@@ -36,12 +37,20 @@ public class Student {
     public String getSurname() { return surname; }
     public void setSurname(String surname) { this.surname = surname; }
 
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getMatricule() {
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
     }
 
     public LocalDate getDateBirth() {

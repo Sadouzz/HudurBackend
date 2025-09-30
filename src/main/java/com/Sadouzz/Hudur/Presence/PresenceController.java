@@ -31,8 +31,8 @@ public class PresenceController {
     private SessionRepository sessionRepository;
 
     @PostMapping
-    public ResponseEntity<?> markPresence(@RequestParam String studentId, @RequestParam Long eventId, @RequestParam Long sessionId) {
-        Presence existingPresence = presenceRepository.findByStudentIdAndEventIdAndSessionId(studentId, eventId, sessionId);
+    public ResponseEntity<?> markPresence(@RequestParam String studentMatricule, @RequestParam Long eventId, @RequestParam Long sessionId) {
+        Presence existingPresence = presenceRepository.findByStudentMatriculeAndEventIdAndSessionId(studentMatricule, eventId, sessionId);
 
         if (existingPresence != null) {
             return ResponseEntity
@@ -40,7 +40,7 @@ public class PresenceController {
                     .body("Étudiant déjà présent pour cet événement/session.");
         }
 
-        Student student = studentRepository.findById(studentId)
+        Student student = studentRepository.findByMatricule(studentMatricule)
                 .orElseThrow(() -> new RuntimeException("Étudiant introuvable"));
 
         Event event = eventRepository.findById(eventId)
@@ -50,9 +50,6 @@ public class PresenceController {
                 .orElseThrow(() -> new RuntimeException("Session introuvable"));
 
         Presence presence = new Presence(student, event, LocalDateTime.now(), session);
-        /*presence.setStudent(student);
-        presence.setEvent(event);
-        presence.setPresenceDate(LocalDateTime.now());*/
 
         Presence savedPresence = presenceRepository.save(presence);
 
@@ -66,7 +63,7 @@ public class PresenceController {
     }
 
     @GetMapping("/student/{studentId}")
-    public List<Presence> getPresencesByStudent(@PathVariable String studentId) {
+    public List<Presence> getPresencesByStudent(@PathVariable Long studentId) {
         return presenceRepository.findByStudentId(studentId);
     }
 }

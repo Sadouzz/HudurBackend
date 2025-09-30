@@ -22,14 +22,11 @@ public class Event {
     private Date endDate;
     private String photoUrl;
 
-    private LocalTime startRegistration;
-    private LocalTime endRegistration;
-
     @OneToMany(mappedBy = "event")
     private List<Presence> presences;
 
     @OneToMany(mappedBy = "event")
-    private List<Session> sessions;   // 🔥 la nouvelle relation
+    private List<Session> sessions;
 
     // Getters et setters
 
@@ -50,12 +47,6 @@ public class Event {
 
     public Date getEndDate() { return endDate; }
     public void setEndDate(Date endDate) { this.endDate = endDate; }
-
-    public LocalTime getStartRegistration() { return startRegistration; }
-    public void setStartRegistration(LocalTime startRegistration) { this.startRegistration = startRegistration; }
-
-    public LocalTime getEndRegistration() { return endRegistration; }
-    public void setEndRegistration(LocalTime endRegistration) { this.endRegistration = endRegistration; }
 
     public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }

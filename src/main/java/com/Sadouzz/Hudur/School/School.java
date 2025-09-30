@@ -13,10 +13,18 @@ public class School {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String matricule, name;
 
     @OneToMany(mappedBy = "school")
     private List<Classe> classes;
+
+    public String getMatricule() {
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
+    }
 
     public Long getId() {
         return id;

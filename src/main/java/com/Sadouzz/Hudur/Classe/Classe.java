@@ -14,7 +14,7 @@ public class Classe {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name, level;
+    private String matricule, name, level;
 
     //private Long schoolId;
 
@@ -24,6 +24,14 @@ public class Classe {
 
     @OneToMany(mappedBy = "classe")
     private List<Student> students;
+
+    public String getMatricule() {
+        return matricule;
+    }
+
+    public void setMatricule(String matricule) {
+        this.matricule = matricule;
+    }
 
     public Long getId() {
         return id;
