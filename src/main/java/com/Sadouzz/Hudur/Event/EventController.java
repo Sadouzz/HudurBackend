@@ -1,4 +1,5 @@
 package com.Sadouzz.Hudur.Event;
+import com.Sadouzz.Hudur.Config.CloudinaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,20 @@ import java.util.Optional;
 public class EventController {
     public static final String UPLOAD_DIR = "D:\\Ousman\\Dev\\Hudur-GestionPresence - Draft\\uploads/";
 
+    @Autowired
+    private CloudinaryService cloudinaryService;
+
     @PostMapping("/upload")
+    public ResponseEntity<?> uploadImage(@RequestParam("image") MultipartFile file) {
+        try {
+            String url = cloudinaryService.uploadFile(file);
+            return ResponseEntity.ok(url); // retourne l’URL Cloudinary
+        } catch (Exception e) {
+            return ResponseEntity.status(500).body("Erreur upload: " + e.getMessage());
+        }
+    }
+
+    /*@PostMapping("/upload")
     public String uploadImage(@RequestParam("image") MultipartFile image) throws IOException {
         File uploadDir = new File(UPLOAD_DIR);
         if (!uploadDir.exists()) {
@@ -27,7 +41,7 @@ public class EventController {
 
         System.out.println("Image uploaded at: " + filePath); // Log pour vérifier le chemin
         return "http://localhost:8080/uploads/" + image.getOriginalFilename();
-    }
+    }*/
     @Autowired
     private EventService eventService;
 

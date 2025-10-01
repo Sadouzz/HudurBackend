@@ -17,7 +17,7 @@ import static com.Sadouzz.Hudur.Event.EventController.UPLOAD_DIR;
 
 @RestController
 @RequestMapping("/uploads")
-public class UploadController {
+public class UploadController1 {
 
     @GetMapping("/{filename:.+}")
     public ResponseEntity<Resource> serveFile(@PathVariable String filename) throws MalformedURLException {
