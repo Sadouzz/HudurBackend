@@ -66,4 +66,9 @@ public class PresenceController {
     public List<Presence> getPresencesByStudent(@PathVariable Long studentId) {
         return presenceRepository.findByStudentId(studentId);
     }
+
+    @GetMapping("/student/m/{studentMatricule}")
+    public List<Presence> getPresencesByStudent(@PathVariable String studentMatricule) {
+        return presenceRepository.findByStudentMatricule(studentMatricule);
+    }
 }
