@@ -40,6 +40,7 @@ public class RegistrationLoginController {
         {
             return ResponseEntity.badRequest().body("Username already exists!");
         }
+        user.setRole("ADMIN");
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return ResponseEntity.ok(userRepository.save(user));
     }
