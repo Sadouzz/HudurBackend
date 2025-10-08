@@ -12,8 +12,9 @@ public class School {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    private String matricule, name;
+    @Column(unique = true, nullable = false)
+    private String matricule;
+    private String name;
 
     @OneToMany(mappedBy = "school")
     private List<Classe> classes;
