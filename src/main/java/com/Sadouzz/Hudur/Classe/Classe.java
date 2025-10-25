@@ -3,6 +3,7 @@ package com.Sadouzz.Hudur.Classe;
 import com.Sadouzz.Hudur.Presence.Presence;
 import com.Sadouzz.Hudur.School.School;
 import com.Sadouzz.Hudur.Student.Student;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -13,8 +14,11 @@ public class Classe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(unique = true, nullable = false)
+    private String matricule;
+    private String name, level;
 
-    private String matricule, name, level;
+
 
     //private Long schoolId;
 
@@ -22,6 +26,7 @@ public class Classe {
     @JoinColumn(name = "school_id", nullable = false)
     private School school;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "classe")
     private List<Student> students;
 
@@ -71,5 +76,18 @@ public class Classe {
 
     public void setSchool(School school) {
         this.school = school;
+    }
+
+    public List<Student> getStudents() {
+        return students;
+    }
+
+    public void setStudents(List<Student> students) {
+        this.students = students;
+    }
+
+    // NOUVEAU: Méthode pour obtenir le nombre d'étudiants (sera sérialisée en JSON)
+    public int getStudentCount() {
+        return students != null ? students.size() : 0;
     }
 }

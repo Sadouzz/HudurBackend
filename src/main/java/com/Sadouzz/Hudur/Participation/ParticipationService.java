@@ -22,6 +22,11 @@ public class ParticipationService {
         return participationRepository.findById(participationId); // Recherche l'événement dans la base de données
     }
 
+    public Optional<Participation> getByEventIdAndClasseId(Long eventId, Long classeId)
+    {
+        return participationRepository.findByEventIdAndClasseId(eventId, classeId);
+    }
+
 
     public Participation saveParticipation(Participation participation) {
         return participationRepository.save(participation);

@@ -30,9 +30,9 @@ public class ParticipationController {
 
     @PostMapping
     public ResponseEntity<?> createParticipation(@RequestParam Long eventId, @RequestParam Long classId) {
-        Participation existingParticipation = participationRepository.findByEventIdAndClasseId(eventId, classId);
+        Optional<Participation> existingParticipation = participationRepository.findByEventIdAndClasseId(eventId, classId);
 
-        if (existingParticipation != null) {
+        if (existingParticipation.isPresent()) {
             return ResponseEntity
                     .status(HttpStatus.CONFLICT)
                     .body("Participation déjà présente.");
