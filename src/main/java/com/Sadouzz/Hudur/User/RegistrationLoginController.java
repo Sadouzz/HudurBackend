@@ -1,5 +1,6 @@
 package com.Sadouzz.Hudur.User;
 
+import com.Sadouzz.Hudur.Student.Student;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,17 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class RegistrationLoginController {
 
     private final UserRepository userRepository;
+    private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService userDetailsService;
 
-    public RegistrationLoginController(UserRepository userRepository,
+    public RegistrationLoginController(UserRepository userRepository, UserService userService,
                                        PasswordEncoder passwordEncoder,
                                        AuthenticationManager authenticationManager,
                                        JwtUtil jwtUtil,
                                        CustomUserDetailsService userDetailsService) {
         this.userRepository = userRepository;
+        this.userService = userService;
         this.passwordEncoder = passwordEncoder;
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
@@ -36,30 +39,26 @@ public class RegistrationLoginController {
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody User user)
     {
-        if(userRepository.findByUsername(user.getUsername()) != null)
-        {
-            return ResponseEntity.badRequest().body("Username already exists!");
-        }
-        user.setRole("ADMIN");
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return ResponseEntity.ok(userRepository.save(user));
+        return userService.createUser(user);
     }
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User user) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
             );
 
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
             final String jwt = jwtUtil.generateToken(userDetails);
 
             // récupère le rôle depuis ton User ou UserDetails
-            User userFound = userRepository.findByUsername(user.getUsername());
+            User userFound = userRepository.findByEmail(user.getEmail())
+                    .orElseThrow(() -> new RuntimeException("Étudiant introuvable"));
+            //User userFound = userRepository.findByEmail(user.getEmail());
             // exemple : user.getRole() ou userDetails.getAuthorities().toString()
 
-            return ResponseEntity.ok(new AuthResponse(jwt, userFound.getUsername(), userFound.getRole(), userFound.getStudentId()));
+            return ResponseEntity.ok(new AuthResponse(jwt, userFound.getUsername(), userFound.getRole(), userFound.getStudentId(), userFound.getEmail(), userFound.isFirstLogin()));
 
         } catch(Exception ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
@@ -73,12 +72,16 @@ public class RegistrationLoginController {
         private String username;
         private String role;
         private Long studentId;
+        private String email;
+        private boolean firstLogin;
 
-        public AuthResponse(String token, String username, String role, Long studentId) {
+        public AuthResponse(String token, String username, String role, Long studentId, String email, boolean firstLogin) {
             this.token = token;
             this.username = username;
             this.role = role;
             this.studentId = studentId;
+            this.email = email;
+            this.firstLogin = firstLogin;
         }
 
         // getters et setters
@@ -86,6 +89,14 @@ public class RegistrationLoginController {
         public String getUsername() { return username; }
         public String getRole() { return role; }
         public Long getStudentId() { return studentId; }
+
+        public String getEmail() {
+            return email;
+        }
+
+        public boolean isFirstLogin() {
+            return firstLogin;
+        }
     }
 
 
