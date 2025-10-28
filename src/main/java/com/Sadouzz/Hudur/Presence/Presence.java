@@ -29,6 +29,7 @@ public class Presence {
     @JoinColumn(name = "session_id", nullable = false)
     private Session session;
 
+
     public Presence(){
 
     }
