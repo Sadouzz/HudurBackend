@@ -37,8 +37,7 @@ public class RegistrationLoginController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> registerUser(@RequestBody User user)
-    {
+    public ResponseEntity<?> registerUser(@RequestBody User user) throws Exception {
         return userService.createUser(user);
     }
 

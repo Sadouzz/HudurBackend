@@ -18,22 +18,27 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public ResponseEntity<?> createUser(User user) {
+    public ResponseEntity<?> createUser(User user) throws Exception {
         String tempPassword = RandomStringUtils.randomAlphanumeric(10);
 
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body("Username already exists!");
         }
 
-        user.setPassword(passwordEncoder.encode(tempPassword));
+        //user.setPassword(passwordEncoder.encode(tempPassword));
         userRepository.save(user);
 
-        emailService.sendEmail(
-                user.getUsername(),
-                "Votre mot de passe temporaire",
-                "Bonjour,\n\nVotre mot de passe temporaire est : " + tempPassword +
-                        "\n\nVeuillez le changer dès votre première connexion."
-        );
+        /*try{
+            emailService.sendEmail(
+                    user.getUsername(),
+                    "Votre mot de passe temporaire",
+                    "Bonjour,\n\nVotre mot de passe temporaire est : " + tempPassword +
+                            "\n\nVeuillez le changer dès votre première connexion."
+            );
+        }catch (Exception e)
+        {
+            return ResponseEntity.badRequest().body(e);
+        }*/
 
         return ResponseEntity.ok(user);
     }
