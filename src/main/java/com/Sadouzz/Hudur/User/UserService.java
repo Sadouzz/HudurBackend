@@ -21,7 +21,7 @@ public class UserService {
     public ResponseEntity<?> createUser(User user) {
         String tempPassword = RandomStringUtils.randomAlphanumeric(10);
 
-        if (userRepository.findByUsername(user.getUsername()) != null) {
+        if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             return ResponseEntity.badRequest().body("Username already exists!");
         }
 
@@ -29,7 +29,7 @@ public class UserService {
         userRepository.save(user);
 
         emailService.sendEmail(
-                user.getEmail(),
+                user.getUsername(),
                 "Votre mot de passe temporaire",
                 "Bonjour,\n\nVotre mot de passe temporaire est : " + tempPassword +
                         "\n\nVeuillez le changer dès votre première connexion."

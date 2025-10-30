@@ -15,7 +15,7 @@ public class StudentController {
 
 
 
-    @PostMapping("/add")
+    @PostMapping
     public ResponseEntity<Student> createStudent(@RequestBody Student dto) {
         Student saved = studentService.saveStudent(dto);
         return ResponseEntity.ok(saved);
