@@ -19,7 +19,7 @@ public class Student {
 
     private String name, surname;
     private LocalDate dateBirth;
-    private String placeBirth;
+    private String placeBirth, email;
 
     //private Long classId;
 
@@ -37,6 +37,11 @@ public class Student {
 
     public String getSurname() { return surname; }
     public void setSurname(String surname) { this.surname = surname; }
+
+    public String getCompleteName()
+    {
+        return name + " " + surname;
+    }
 
     public Long getId() {
         return id;
@@ -70,6 +75,13 @@ public class Student {
         this.placeBirth = placeBirth;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 //    public Long getClassId() {
 //        return classId;
 //    }

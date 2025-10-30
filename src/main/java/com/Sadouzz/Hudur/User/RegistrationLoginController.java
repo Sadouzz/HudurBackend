@@ -46,19 +46,19 @@ public class RegistrationLoginController {
     public ResponseEntity<?> loginUser(@RequestBody User user) {
         try {
             authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(user.getEmail(), user.getPassword())
+                    new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
             );
 
-            final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getEmail());
+            final UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
             final String jwt = jwtUtil.generateToken(userDetails);
 
             // récupère le rôle depuis ton User ou UserDetails
-            User userFound = userRepository.findByEmail(user.getEmail())
+            User userFound = userRepository.findByUsername(user.getUsername())
                     .orElseThrow(() -> new RuntimeException("Étudiant introuvable"));
             //User userFound = userRepository.findByEmail(user.getEmail());
             // exemple : user.getRole() ou userDetails.getAuthorities().toString()
 
-            return ResponseEntity.ok(new AuthResponse(jwt, userFound.getUsername(), userFound.getRole(), userFound.getStudentId(), userFound.getEmail(), userFound.isFirstLogin()));
+            return ResponseEntity.ok(new AuthResponse(jwt, userFound.getName(), userFound.getUsername(), userFound.getRole(), userFound.getStudentId(), userFound.isFirstLogin()));
 
         } catch(Exception ex) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid username or password");
@@ -69,30 +69,32 @@ public class RegistrationLoginController {
     // DTO pour renvoyer le token
     public class AuthResponse {
         private String token;
+        private String name;
         private String username;
         private String role;
         private Long studentId;
-        private String email;
         private boolean firstLogin;
 
-        public AuthResponse(String token, String username, String role, Long studentId, String email, boolean firstLogin) {
+
+
+        public AuthResponse(String token, String name, String username, String role, Long studentId, boolean firstLogin) {
             this.token = token;
+            this.name = name;
             this.username = username;
             this.role = role;
             this.studentId = studentId;
-            this.email = email;
             this.firstLogin = firstLogin;
         }
 
-        // getters et setters
         public String getToken() { return token; }
         public String getUsername() { return username; }
+
+        public String getName() {
+            return name;
+        }
+
         public String getRole() { return role; }
         public Long getStudentId() { return studentId; }
-
-        public String getEmail() {
-            return email;
-        }
 
         public boolean isFirstLogin() {
             return firstLogin;
