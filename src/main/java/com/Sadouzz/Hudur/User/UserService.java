@@ -26,7 +26,7 @@ public class UserService {
         }
 
         //user.setPassword(passwordEncoder.encode(tempPassword));
-        user.setPassword(user.getPassword());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
         /*try{
